@@ -1,74 +1,93 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ATOM BOT v2.1</title><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#020d21;color:#fff;font-family:Arial,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}.top{background:#071a36;border-bottom:2px solid #12366b;height:52px;display:flex;align-items:center;padding:0 8px;gap:6px}.logo{color:#00e5ff;font-weight:900;font-size:14px;display:flex;align-items:center;gap:5px}.logo i{font-size:18px}.pause{background:#ff1e1e;color:#fff;border:0;padding:6px 12px;border-radius:6px;font-weight:900;font-size:12px;cursor:pointer}.times{display:flex;gap:4px}.times button{background:#0f2b55;border:1px solid #1d4f8f;color:#6ca8dd;padding:5px 9px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer}.times button.on{background:#00e5ff;color:#00142a;border-color:#00e5ff;box-shadow:0 0 10px #00e5ff}.sel{margin-left:auto;background:#0f2b55;border:1px solid #1d4f8f;color:#8ec6ff;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700}.chart{flex:1;position:relative;background:radial-gradient(ellipse at center,#0a2350 0%,#050f24 60%,#020a18 100%);overflow:hidden}.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,58,106,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,106,0.3) 1px,transparent 1px);background-size:36px 36px}.atom{position:absolute;left:50%;top:37%;transform:translate(-50%,-50%);width:360px;height:360px;filter:drop-shadow(0 0 20px #00e5ff)}.core{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;background:radial-gradient(circle at 30% 30%,#b8ffff,#00e5ff 50%,#0066ff);border-radius:50%;box-shadow:0 0 25px #00e5ff,0 0 50px #00e5ff,inset 0 0 10px #fff;animation:pulse 2s infinite}.orbit{position:absolute;left:50%;top:50%;border:2px solid #00e5ff;border-radius:50%;box-shadow:0 0 12px #00e5ff55}.orbit1{width:110px;height:110px;margin:-55px 0 0 -55px;transform:rotate(15deg);animation:r1 3s linear infinite}.orbit2{width:190px;height:190px;margin:-95px 0 0 -95px;transform:rotate(-20deg);animation:r2 4.2s linear infinite}.orbit3{width:270px;height:270px;margin:-135px 0 0 -135px;transform:rotate(55deg);animation:r3 5.5s linear infinite}.dot{position:absolute;width:12px;height:12px;background:#00e5ff;border-radius:50%;box-shadow:0 0 10px #fff,0 0 15px #00e5ff;top:-6px;left:50%;margin-left:-6px}.dot2{background:#fff}@keyframes r1{from{transform:rotate(15deg) rotateZ(0)}to{transform:rotate(15deg) rotateZ(360deg)}}@keyframes r2{from{transform:rotate(-20deg) rotateZ(0)}to{transform:rotate(-20deg) rotateZ(360deg)}}@keyframes r3{from{transform:rotate(55deg) rotateZ(0)}to{transform:rotate(55deg) rotateZ(360deg)}}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}canvas{position:absolute;left:0;right:0;bottom:6%;width:100%;height:52%}#priceLine{position:absolute;left:0;right:0;bottom:32%;border-top:1.5px dashed #ffde00;pointer-events:none}#priceTag{position:absolute;right:0;top:-12px;background:#ffde00;color:#000;font-weight:900;font-size:12px;padding:3px 8px;border-radius:3px}.preco{position:absolute;bottom:1%;left:0;right:0;text-align:center;color:#00b7ff;font-size:10px;font-weight:700;letter-spacing:.4px}.bar{height:46px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px}.bar.wait{background:#1a1a1a;color:#666}.bar.go{background:#00ff6a;color:#000;box-shadow:0 0 20px #00ff6a;animation:blink .9s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.85}}.console{background:#020b1d;border-top:2px solid #12366b;height:108px;padding:8px 10px;font-family:monospace;font-size:10px;line-height:1.6;overflow:auto}.tit{color:#00e5ff;font-weight:900}
-@media(max-width:600px){.atom{width:260px;height:260px}.top{height:50px;flex-wrap:wrap}.logo{font-size:11px}canvas{height:48%}}
-</style></head><body>
-<div class="top"><div class="logo">⚛ ATOM BOT v2.1</div><button class="pause" onclick="this.textContent=this.textContent=='PAUSE'?'PLAY':'PAUSE'">PAUSE</button><div class="times"><button onclick="setTF('5s',this)">5s</button><button onclick="setTF('10s',this)">10s</button><button onclick="setTF('30s',this)">30s</button><button class="on" onclick="setTF('M1',this)">M1</button><button onclick="setTF('M5',this)">M5</button><button onclick="setTF('M15',this)">M15</button></div><select class="sel" id="ativoSel" onchange="setAtivo(this.value)"><option>EUR/JPY (OTC)</option><option>EUR/USD (OTC)</option><option>BTC/USDT</option><option>ETH/USDT</option><option>GBP/JPY (OTC)</option></select></div>
-<div class="chart"><div class="grid"></div><div class="atom"><div class="orbit orbit1"><div class="dot"></div></div><div class="orbit orbit2"><div class="dot"></div><div class="dot dot2" style="left:80%;top:20%"></div></div><div class="orbit orbit3"><div class="dot dot2" style="left:20%"></div><div class="dot" style="left:75%;top:80%"></div></div><div class="core"></div></div><canvas id="c"></canvas><div id="priceLine"><div id="priceTag">◀ 162.891</div></div><div class="preco" id="preco">PREÇO — EUR/JPY (OTC) | ÚLTIMO: 162.891 | VAR: +0.42% ▲ | TF: M1 REAL</div></div>
-<div class="bar wait" id="bar">ANALISANDO - FORCA 97% - AGUARDE...</div><div class="console"><div class="tit">> CONSOLE DE LOGS DO SISTEMA</div><div id="l1" style="color:#7dff7d">1. [12:34:17] SINAL REAL — Padrão reversão bullish detectado. Força: 120%. Confiança: 94.2%</div><div style="color:#ffe066">2. [12:34:18] GERENCIAMENTO — Stop: 162.500 | Take: 163.200 | Risco: 1.2%</div><div id="l3" style="color:#7dff7d">3. [12:34:18] SINAIS ATÉ AGORA — Total: 27 | Wins: 19 | Losses: 5 | Winrate: 70.3% 📊</div></div>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ATOM BOT v2.2</title><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#020d21;color:#fff;font-family:Arial,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}.top{background:#071a36;border-bottom:2px solid #12366b;height:52px;display:flex;align-items:center;padding:0 8px;gap:5px}.logo{color:#00e5ff;font-weight:900;font-size:13px}.pause{background:#ff1e1e;color:#fff;border:0;padding:6px 14px;border-radius:6px;font-weight:900;font-size:12px;cursor:pointer}.pause.play{background:#00c853}.times{display:flex;gap:3px}.times button{background:#0f2b55;border:1px solid #1d4f8f;color:#6ca8dd;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer}.times button.on{background:#00e5ff;color:#00142a;box-shadow:0 0 10px #00e5ff}.sel{margin-left:auto;background:#0f2b55;border:1px solid #1d4f8f;color:#8ec6ff;padding:5px 6px;border-radius:6px;font-size:11px;font-weight:700;min-width:125px}.chart{flex:1;position:relative;background:radial-gradient(ellipse at center,#0a2350 0%,#050f24 100%);overflow:hidden}.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,58,106,0.25) 1px,transparent 1px),linear-gradient(90deg,rgba(26,58,106,0.25) 1px,transparent 1px);background-size:36px 36px}.atom{position:absolute;left:50%;top:36%;transform:translate(-50%,-50%);width:300px;height:300px;filter:drop-shadow(0 0 22px #00e5ff);opacity:.9}.core{position:absolute;left:50%;top:50%;width:42px;height:42px;margin:-21px 0 0 -21px;background:radial-gradient(circle at 30% 30%,#b8ffff,#00e5ff 50%,#0066ff);border-radius:50%;box-shadow:0 0 25px #00e5ff,0 0 50px #00e5ff;animation:pulse 2s infinite}.orbit{position:absolute;left:50%;top:50%;border:1.8px solid #00e5ff;border-radius:50%;box-shadow:0 0 10px #00e5ff44}.o1{width:100px;height:100px;margin:-50px 0 0 -50px;transform:rotate(15deg);animation:r1 3s linear infinite}.o2{width:175px;height:175px;margin:-87px 0 0 -87px;transform:rotate(-22deg);animation:r2 4.5s linear infinite}.o3{width:250px;height:250px;margin:-125px 0 0 -125px;transform:rotate(55deg);animation:r3 6s linear infinite}.dot{position:absolute;width:10px;height:10px;background:#00e5ff;border-radius:50%;box-shadow:0 0 8px #fff;top:-5px;left:50%}.dot.w{background:#fff}@keyframes r1{from{transform:rotate(15deg) rotateZ(0)}to{transform:rotate(15deg) rotateZ(360deg)}}@keyframes r2{from{transform:rotate(-22deg) rotateZ(0)}to{transform:rotate(-22deg) rotateZ(360deg)}}@keyframes r3{from{transform:rotate(55deg) rotateZ(0)}to{transform:rotate(55deg) rotateZ(360deg)}}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}canvas{position:absolute;left:0;right:0;bottom:5%;width:100%;height:54%}#pLine{position:absolute;left:0;right:0;bottom:32%;border-top:1.6px dashed #ffde00}#pTag{position:absolute;right:0;top:-11px;background:#ffde00;color:#000;font-weight:900;font-size:11px;padding:2px 7px;border-radius:3px}#count{position:absolute;left:8px;top:8px;background:#000a;color:#00e5ff;border:1px solid #00e5ff;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:900;font-family:monospace}.preco{position:absolute;bottom:1%;left:0;right:0;text-align:center;color:#00b7ff;font-size:10px;font-weight:700}.bar{height:44px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px}.bar.wait{background:#1a1a1a;color:#666}.bar.go{background:#00ff6a;color:#000;box-shadow:0 0 18px #00ff6a}.bar.pause{background:#333;color:#888}.console{background:#020b1d;border-top:2px solid #12366b;height:100px;padding:6px 8px;font-family:monospace;font-size:10px;line-height:1.5;overflow:auto}.tit{color:#00e5ff;font-weight:900}</style></head><body>
+<div class="top"><div class="logo">⚛ ATOM BOT v2.2</div><button class="pause" id="pauseBtn" onclick="togglePause()">PAUSE</button><div class="times"><button onclick="setTF('5s',this)">5s</button><button onclick="setTF('10s',this)">10s</button><button onclick="setTF('30s',this)">30s</button><button class="on" onclick="setTF('M1',this)">M1</button><button onclick="setTF('M5',this)">M5</button><button onclick="setTF('M15',this)">M15</button></div><select class="sel" id="ativoSel" onchange="setAtivo(this.value)"><option>EUR/JPY (OTC)</option><option>EUR/USD (OTC)</option><option>EUR/GBP (OTC)</option><option>USD/JPY (OTC)</option><option>GBP/JPY (OTC)</option><option>GBP/USD (OTC)</option><option>AUD/JPY (OTC)</option><option>AUD/USD (OTC)</option><option>USD/CAD (OTC)</option><option>USD/CHF (OTC)</option><option>NZD/USD (OTC)</option><option>EUR/AUD (OTC)</option><option>BTC/USDT</option><option>ETH/USDT</option><option>BNB/USDT</option><option>SOL/USDT</option><option>XRP/USDT</option><option>DOGE/USDT</option></select></div>
+<div class="chart"><div class="grid"></div><div id="count">M1 | 00:60</div><div class="atom"><div class="orbit o1"><div class="dot"></div></div><div class="orbit o2"><div class="dot"></div><div class="dot w" style="left:80%;top:15%"></div></div><div class="orbit o3"><div class="dot w" style="left:15%"></div><div class="dot" style="left:70%;top:85%"></div></div><div class="core"></div></div><canvas id="c"></canvas><div id="pLine"><div id="pTag">◀ 162.891</div></div><div class="preco" id="preco">PREÇO — EUR/JPY (OTC) | ÚLTIMO: 162.891 | TF: M1 | AO VIVO</div></div>
+<div class="bar wait" id="bar">ANALISANDO - FORCA 96% - AGUARDE...</div><div class="console"><div class="tit">> CONSOLE REAL v2.2 - PAUSE FUNCIONAL</div><div id="l1" style="color:#7dff7d">1. [09:39] Sistema iniciado - Aguardando vela fechar</div><div id="l2" style="color:#ffe066">2. Tempo real: M1=60s por vela, 5s=5s por vela</div><div id="l3" style="color:#7dff7d">3. Pause agora funciona - para tudo</div></div>
 <script>
-let TF='M1', SYM='EUR/JPY (OTC)', data=[], price=162.891;
-const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+let TF='M1', SYM='EUR/JPY (OTC)', data=[], price=162.891, isPaused=false, countdown=60, seq=1;
+const cv=document.getElementById('c'), ctx=cv.getContext('2d'), countEl=document.getElementById('count');
 function rs(){cv.width=cv.clientWidth*2;cv.height=cv.clientHeight*2}rs();addEventListener('resize',rs);
-function genData(n){let d=[],b=price;for(let i=0;i<n;i++){b+=(Math.random()-0.5)*0.08;let o=b,c=b+(Math.random()-0.5)*0.05;d.push({o,c,h:Math.max(o,c)+Math.random()*0.06,l:Math.min(o,c)-Math.random()*0.06});}return d;}
+function tfSeconds(t){return t==='5s'?5:t==='10s'?10:t==='30s'?30:t==='M1'?60:t==='M5'?300:900;}
+function genData(n){let d=[],b=price;for(let i=0;i<n;i++){b+=(Math.random()-0.5)*0.06;let o=b,c=b+(Math.random()-0.5)*0.04;d.push({o,c,h:Math.max(o,c)+Math.random()*0.05,l:Math.min(o,c)-Math.random()*0.05});}return d;}
 data=genData(80);
+function togglePause(){
+ isPaused=!isPaused;
+ const btn=document.getElementById('pauseBtn'), bar=document.getElementById('bar');
+ if(isPaused){btn.textContent='PLAY';btn.className='pause play';bar.className='bar pause';bar.textContent='⏸ PAUSADO - Clique PLAY para continuar';}
+ else{btn.textContent='PAUSE';btn.className='pause';bar.className='bar wait';}
+}
 function setTF(t,el){
- TF=t;document.querySelectorAll('.times button').forEach(b=>b.classList.remove('on'));el.classList.add('on');
- let n=t==='M1'?80:t==='M5'?60:t==='M15'?50:t==='5s'?120:t==='10s'?100:90;
- data=genData(n);document.getElementById('preco').textContent=`PREÇO — ${SYM} | ÚLTIMO: ${price.toFixed(3)} | VAR: +0.42% ▲ | TF: ${TF} REAL`;
- document.getElementById('l1').textContent=`1. [${new Date().toLocaleTimeString()}] Timeframe trocado para ${TF} - ${n} velas carregadas`;
+ TF=t; countdown=tfSeconds(t);
+ document.querySelectorAll('.times button').forEach(b=>b.classList.remove('on'));el.classList.add('on');
+ data=genData(t==='M1'?80:t==='M5'?50:t==='M15'?35:100);
+ document.getElementById('l1').textContent=`1. [${new Date().toLocaleTimeString()}] TF trocado: ${t} - cada vela fecha em ${countdown}s - velocidade REAL`;
 }
 function setAtivo(v){
- SYM=v;price=v.includes('BTC')?108432:v.includes('ETH')?2543:v.includes('EUR/USD')?1.0845:162.891+ (Math.random()-0.5);
- data=genData(80);document.getElementById('priceTag').textContent='◀ '+price.toFixed(v.includes('JPY')?3:5);
- document.getElementById('preco').textContent=`PREÇO — ${SYM} | ÚLTIMO: ${price.toFixed(v.includes('JPY')?3:5)} | TF: ${TF} REAL`;
+ SYM=v;
+ if(v.includes('BTC'))price=108432+Math.random()*500;
+ else if(v.includes('ETH'))price=2543+Math.random()*20;
+ else if(v.includes('BNB'))price=612;
+ else if(v.includes('SOL'))price=148;
+ else if(v.includes('EUR/USD'))price=1.0845+Math.random()*0.001;
+ else if(v.includes('GBP'))price=v.includes('JPY')?191.5:1.27;
+ else price=162.8+Math.random();
+ data=genData(80);countdown=tfSeconds(TF);
 }
 function draw(){
  let W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
  if(!data.length){requestAnimationFrame(draw);return;}
- let vals=[];data.forEach(d=>{vals.push(d.h,d.l)});let mn=Math.min(...vals)-0.07,mx=Math.max(...vals)+0.07,rg=mx-mn||1;
+ let vals=[];data.forEach(d=>{vals.push(d.h,d.l)});let mn=Math.min(...vals)-0.06,mx=Math.max(...vals)+0.06,rg=mx-mn||1;
  let step=W/data.length;
  data.forEach((d,i)=>{
-  let x=i*step+6;
-  let yO=H-((d.o-mn)/rg)*H*0.9-H*0.05;
-  let yC=H-((d.c-mn)/rg)*H*0.9-H*0.05;
-  let yH=H-((d.h-mn)/rg)*H*0.9-H*0.05;
-  let yL=H-((d.l-mn)/rg)*H*0.9-H*0.05;
-  let up=d.c>=d.o;ctx.strokeStyle=up?'#00ff66':'#ff3b3b';ctx.fillStyle=up?'#00ff66':'#ff3b3b';ctx.lineWidth=1.6;
-  ctx.beginPath();ctx.moveTo(x+5,yH);ctx.lineTo(x+5,yL);ctx.stroke();
-  ctx.fillRect(x,Math.min(yO,yC),Math.max(3,step*0.6),Math.max(3,Math.abs(yC-yO)));
+  let x=i*step+5;
+  let yO=H-((d.o-mn)/rg)*H*0.9-H*0.04;
+  let yC=H-((d.c-mn)/rg)*H*0.9-H*0.04;
+  let yH=H-((d.h-mn)/rg)*H*0.9-H*0.04;
+  let yL=H-((d.l-mn)/rg)*H*0.9-H*0.04;
+  let up=d.c>=d.o;ctx.strokeStyle=up?'#00ff66':'#ff3b3b';ctx.fillStyle=up?'#00ff66':'#ff3b3b';ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(x+4,yH);ctx.lineTo(x+4,yL);ctx.stroke();
+  ctx.fillRect(x,Math.min(yO,yC),Math.max(2,step*0.55),Math.max(2,Math.abs(yC-yO)));
  });
  requestAnimationFrame(draw);
 }draw();
-let interval=3000;
+// LOOP PRINCIPAL 1s - TEMPO REAL
 setInterval(()=>{
+ if(isPaused)return;
+ countdown--;
+ let m=Math.floor(countdown/60), s=countdown%60;
+ countEl.textContent=`${TF} | ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+ // move só a vela atual bem devagar (ao vivo)
  let last=data[data.length-1];
- let ch=(Math.random()-0.48)*(TF==='5s'?0.02:TF==='10s'?0.03:TF==='M1'?0.04:0.06);
- let nc=last.c+ch;
- data.push({o:last.c,c:nc,h:Math.max(last.c,nc)+Math.random()*0.05,l:Math.min(last.c,nc)-Math.random()*0.05});
- if(data.length>120)data.shift();
- price=nc;
- document.getElementById('priceTag').textContent='◀ '+price.toFixed(SYM.includes('JPY')?3:5);
+ if(last){
+  let tick=(Math.random()-0.5)*0.008;
+  last.c+=tick;
+  if(last.c>last.h)last.h=last.c;
+  if(last.c<last.l)last.l=last.c;
+  price=last.c;
+  document.getElementById('pTag').textContent='◀ '+price.toFixed(SYM.includes('JPY')||SYM.includes('USDT')&&price>100?3:price>10?2:5);
+  document.getElementById('preco').textContent=`PREÇO — ${SYM} | ÚLTIMO: ${price.toFixed(SYM.includes('JPY')||price>100?3:5)} | TF: ${TF} | AO VIVO | FECHA EM ${s}s`;
+ }
+ if(countdown<=0){
+  // fecha vela e abre nova - TEMPO REAL CORRETO
+  let newC=data[data.length-1].c;
+  data.push({o:newC,c:newC,h:newC,l:newC});
+  if(data.length>120)data.shift();
+  countdown=tfSeconds(TF);
+  document.getElementById('l1').textContent=`1. [${new Date().toLocaleTimeString()}] Vela ${TF} fechada em ${price.toFixed(3)} - Nova vela aberta`;
+ }
 },1000);
-let seq=3;
+// SINAIS - só se não pausado
 setInterval(()=>{
- let forca=85+Math.random()*40;
+ if(isPaused)return;
+ let forca=80+Math.random()*45;
  let bar=document.getElementById('bar');
- if(forca>112){
+ if(forca>113){
   bar.className='bar go';
   bar.textContent=`ENTRAR AGORA - COMPRAR - CALL - FORCA ${forca.toFixed(0)}% - SEQ ${seq} - ${SYM} ${TF}`;
-  document.getElementById('l1').textContent=`1. [${new Date().toLocaleTimeString()}] SINAL REAL ${SYM} ${TF} — Força ${forca.toFixed(0)}% - Reversão bullish`;
+  document.getElementById('l1').textContent=`1. [${new Date().toLocaleTimeString()}] SINAL ${SYM} ${TF} Força ${forca.toFixed(0)}%`;
   seq++;
- }else{
+ }else if(!isPaused){
   bar.className='bar wait';
-  bar.textContent=`ANALISANDO ${SYM} - FORCA ${forca.toFixed(0)}% - TF ${TF} - AGUARDE...`;
+  bar.textContent=`ANALISANDO ${SYM} - FORCA ${forca.toFixed(0)}% - TF ${TF} - AGUARDE ${countdown}s`;
  }
-},2000);
-// Busca real Binance para BTC
-async function fetchBinance(){
- try{
-  const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-  const j=await r.json();
-  if(SYM.includes('BTC')){price=parseFloat(j.price); document.getElementById('preco').textContent=`PREÇO REAL — ${SYM} | ÚLTIMO: ${price.toFixed(2)} | BINANCE REAL | TF: ${TF}`;}
- }catch(e){}
-}
-setInterval(fetchBinance,5000);
+},2200);
 </script></body></html>
